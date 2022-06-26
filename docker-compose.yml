@@ -4,7 +4,9 @@ services:
   main: &main
     container_name: bfair
     image: "jpconsuegra/bfair"
-    build: "."
+    build:
+      context: "."
+      dockerfile: "dockerfile"
     volumes:
       - "./:/home/coder/bfair"
       - "~/.ssh:/home/coder/.ssh"
@@ -34,7 +36,9 @@ services:
 
   autogoal:
     image: "jpconsuegra/autogoal"
-    build: "./vendor/autogoal/"
+    build:
+      context: "./vendor/autogoal/"
+      dockerfile: "dockerfile"
     hostname: autogoal
     volumes:
       - "~/.autogoal:/home/coder/.autogoal"
