@@ -1,4 +1,4 @@
 [submodule "vendor/autogoal"]
 	path = vendor/autogoal
-	url = git@github.com:jpconsuegra/autogoal.git
-	branch = develop
+	url = https://github.com/jmederosalvarado/autogoal.git
+	branch = bfair-dev
