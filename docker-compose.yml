@@ -38,7 +38,7 @@ services:
     image: "jpconsuegra/autogoal"
     build:
       context: "./vendor/autogoal/"
-      dockerfile: "dockerfile"
+      dockerfile: "dev.dockerfile"
     hostname: autogoal
     volumes:
       - "~/.autogoal:/home/coder/.autogoal"
