@@ -1,4 +1,4 @@
 [submodule "vendor/autogoal"]
 	path = vendor/autogoal
 	url = https://github.com/pat-and-mat/autogoal.git
-	branch = develop
+	branch = nspge
