@@ -3,7 +3,7 @@ version: "3"
 services:
   main: &main
     container_name: bfair
-    image: "autogoal/autogoal"
+    image: "bfair-ml/bfair"
     volumes:
       - "./:/home/coder/bfair"
       - "~/.ssh:/home/coder/.ssh"
