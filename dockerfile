@@ -1,4 +1,4 @@
-FROM jpconsuegra/autogoal
+FROM bfair-ml/autogoal
 
 RUN curl -fsSL https://starship.rs/install.sh > ~/starship.sh
 RUN sh ~/starship.sh --yes
