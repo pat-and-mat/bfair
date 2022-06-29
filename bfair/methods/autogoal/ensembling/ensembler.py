@@ -1,4 +1,4 @@
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, List, Tuple, Union
 
 import numpy as np
 from autogoal.kb import MatrixCategorical, Supervised, VectorCategorical
@@ -21,19 +21,21 @@ class AutoGoalEnsembler:
     def __init__(
         self,
         *,
-        score_metric: Callable[[Any, Any, Any], float],
+        score_metric: Callable[[Any, Any, Any], Union[float, List[float]]],
+        maximize: Union[bool, List[bool]],
         validation_split=0.3,
-        maximize=True,
         errors="warn",
         allow_duplicates=False,
         include_filter=".*",
         exclude_filter=None,
         registry=None,
+        search_algorithm=PESearch,
         **search_kwargs,
     ):
         self.score_metric = score_metric
         self.validation_split = validation_split
         self.maximize = maximize
+        self.search_algorithm = search_algorithm
         self.search_kwargs = search_kwargs
         self.search_kwargs["errors"] = errors
         self.search_kwargs["allow_duplicates"] = allow_duplicates
@@ -58,6 +60,7 @@ class AutoGoalEnsembler:
         y,
         classifiers: List[ClassifierWrapper],
         scores: List[float],
+        maximized: bool,
         *,
         test_on=None,
         pre_caching=True,
@@ -69,6 +72,7 @@ class AutoGoalEnsembler:
             y,
             classifiers,
             scores,
+            maximized,
             test_on=test_on,
             pre_caching=pre_caching,
             **run_kwargs,
@@ -80,6 +84,7 @@ class AutoGoalEnsembler:
         y,
         classifiers,
         scores,
+        maximized,
         *,
         test_on=None,
         pre_caching=True,
@@ -98,9 +103,9 @@ class AutoGoalEnsembler:
             classifiers,
             scores,
             pre_caching,
-            self.maximize,
+            maximized,
         )
-        search = PESearch(
+        search = self.search_algorithm(
             generator_fn=generator,
             fitness_fn=fn,
             maximize=self.maximize,
@@ -111,7 +116,7 @@ class AutoGoalEnsembler:
         return best, best_fn
 
     def _build_generator_and_fn(
-        self, X, y, X_test, y_test, classifiers, scores, pre_caching, maximize
+        self, X, y, X_test, y_test, classifiers, scores, maximized, pre_caching
     ):
         named_classifiers = {str(c): c for c in classifiers}
         classifier2index = {str(c): i for i, c in enumerate(classifiers)}
@@ -140,17 +145,17 @@ class AutoGoalEnsembler:
             ensembler_type = sampler.choice(ensembler_types, handle="ensembler_type")
             if ensembler_type == "voting":
                 ensembler = VotingClassifier(
-                    selected_classifiers, selected_scores, maximize
+                    selected_classifiers, selected_scores, maximized
                 )
             elif ensembler_type == "learning":
                 pipeline = model_generator(sampler)
                 model = ClassifierWrapper(pipeline)
                 ensembler = MLVotingClassifier(
-                    selected_classifiers, selected_scores, maximize, model=model
+                    selected_classifiers, selected_scores, maximized, model=model
                 )
             elif ensembler_type == "overfit":
                 ensembler = OverfittedVotingClassifier(
-                    selected_classifiers, selected_scores, maximize
+                    selected_classifiers, selected_scores, maximized
                 )
             else:
                 raise Exception(f"Unknown ensembler_type: {ensembler_type}")
