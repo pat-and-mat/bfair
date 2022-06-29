@@ -3,10 +3,7 @@ version: "3"
 services:
   main: &main
     container_name: bfair
-    image: "bfair-ml/bfair"
-    build:
-      context: "."
-      dockerfile: "dockerfile"
+    image: "autogoal/autogoal"
     volumes:
       - "./:/home/coder/bfair"
       - "~/.ssh:/home/coder/.ssh"
