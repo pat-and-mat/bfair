@@ -5,11 +5,11 @@ RUN sh ~/starship.sh --yes
 RUN echo 'eval "$(starship init bash)"' >> ~/.bashrc
 RUN rm ~/starship.sh
 
-RUN pip install --user -U black
+RUN sudo pip install -U black
 
-RUN pip install --user -U streamlit==0.83
+RUN sudo pip install -U streamlit==0.83
 
-RUN pip install --user -U sklearn
+RUN sudo pip install -U sklearn
 
 WORKDIR /home/coder/bfair
 
