@@ -5,7 +5,7 @@ RUN sh ~/starship.sh --yes
 RUN echo 'eval "$(starship init bash)"' >> ~/.bashrc
 RUN rm ~/starship.sh
 
-RUN sudo pip install -U scikit-learn
+RUN sudo pip install scikit-learn
 
 WORKDIR /home/coder/bfair
 
