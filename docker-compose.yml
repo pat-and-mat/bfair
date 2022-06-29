@@ -3,7 +3,7 @@ version: "3"
 services:
   main: &main
     container_name: bfair
-    image: "jpconsuegra/bfair"
+    image: "bfair-ml/bfair"
     build: "."
     volumes:
       - "./:/home/coder/bfair"
@@ -33,7 +33,7 @@ services:
               capabilities: [gpu]
 
   autogoal:
-    image: "jpconsuegra/autogoal"
+    image: "bfair-ml/autogoal"
     build: "./vendor/autogoal/"
     hostname: autogoal
     volumes:

@@ -7,7 +7,7 @@ from typing import Any, Callable, Tuple
 
 import bfair.metrics.disparity as disparity
 from autogoal.contrib import find_classes
-from autogoal.search import ConsoleLogger, PESearch
+from autogoal.search import ConsoleLogger, NSPESearch
 from bfair.methods import AutoGoalMitigator
 from bfair.methods.autogoal.diversification import (
     build_best_performance_ranking_fd,
@@ -198,7 +198,7 @@ def _run(
         ),
         # [start] AutoML args [start]
         #
-        search_algorithm=PESearch,
+        search_algorithm=NSPESearch,
         pop_size=args.popsize,
         search_iterations=args.iterations,
         evaluation_timeout=args.timeout,
