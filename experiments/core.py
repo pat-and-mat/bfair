@@ -229,6 +229,8 @@ def _run(
 
     for l in loggers:
         l.primary("---------------> diversifying")
+    with open("diversify.txt", "w") as f:
+        pass
     pipelines, scores = mitigator.diversify(
         X_train,
         y_train,
@@ -238,11 +240,14 @@ def _run(
 
     for l in loggers:
         l.primary("---------------> ensembleing")
+    with open("ensemble.txt", "w") as f:
+        f.write(str(pipelines))
     model, score = mitigator.ensemble(
         pipelines,
         scores,
         X_train,
         y_train,
+        maximize,
         logger=loggers,
         **ensembler_run_kwargs,
     )

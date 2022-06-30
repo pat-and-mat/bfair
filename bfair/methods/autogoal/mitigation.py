@@ -261,7 +261,9 @@ class AutoGoalMitigator:
         )
         return pipelines, scores
 
-    def ensemble(self, pipelines, scores, X, y, *, test_on=None, **run_kwargs):
+    def ensemble(
+        self, pipelines, scores, X, y, maximized, *, test_on=None, **run_kwargs
+    ):
         # should fmetric be scored on fully trained pipelines? R.\ NO
 
         if test_on is None:
@@ -297,6 +299,7 @@ class AutoGoalMitigator:
             y,
             classifiers,
             scores,
+            maximized,
             test_on=test_on,
             generations=self.diversifier.search_iterations,
             constraint=constraint,
