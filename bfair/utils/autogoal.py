@@ -69,6 +69,28 @@ class FileLogger(Logger):
             )
 
 
+class FileLoggerWithMOSupport(FileLogger):
+    def end(self, best, best_fn):
+        if not isinstance(best, (list, tuple)):
+            super().end(best, best_fn)
+
+        current_time = time.time()
+        elapsed = int(current_time - self.start_time)
+        elapsed = datetime.timedelta(seconds=elapsed)
+
+        best_fn_str_tuple = tuple(f"{float(fn or 0.0)}:0.3" for fn in best_fn)
+
+        with self.output_path.open("a") as fd:
+            fd.writelines(
+                (
+                    "Search completed: best_fn=%r, best=\n%r\n"
+                    % (best_fn_str_tuple, best),
+                    f"Time spent: elapsed={elapsed}\n",
+                    "\n",
+                )
+            )
+
+
 def split_input(X, y, validation_split=0.3):
     len_x = len(X) if isinstance(X, list) else X.shape[0]
     indices = np.arange(0, len_x)

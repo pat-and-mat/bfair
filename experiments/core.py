@@ -7,7 +7,7 @@ from typing import Any, Callable, Tuple
 
 import bfair.metrics.disparity as disparity
 from autogoal.contrib import find_classes
-from autogoal.search import ConsoleLogger, PESearch
+from autogoal.search import ConsoleLoggerWithMOSupport as ConsoleLogger, PESearch
 from bfair.methods import AutoGoalMitigator
 from bfair.methods.autogoal.diversification import (
     build_best_performance_ranking_fd,
@@ -222,7 +222,7 @@ def _run(
         loggers.append(telegram)
 
     if path:
-        from bfair.utils.autogoal import FileLogger
+        from bfair.utils.autogoal import FileLoggerWithMOSupport as FileLogger
 
         file_logger = FileLogger(output_path=path)
         loggers.append(file_logger)
