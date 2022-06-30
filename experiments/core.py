@@ -227,12 +227,17 @@ def _run(
         file_logger = FileLogger(output_path=path)
         loggers.append(file_logger)
 
+    for l in loggers:
+        l.primary("---------------> diversifying")
     pipelines, scores = mitigator.diversify(
         X_train,
         y_train,
         logger=loggers,
         **diversifier_run_kwargs,
     )
+
+    for l in loggers:
+        l.primary("---------------> ensembleing")
     model, score = mitigator.ensemble(
         pipelines,
         scores,
